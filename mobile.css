@@ -57,6 +57,7 @@
   .news-card:not(:first-child) .news-photo { height: 170px; aspect-ratio: auto; }
   .news-card:not(:first-child) .news-copy { align-self: center; padding-top: 0; }
   .news-card:not(:first-child) h3 { font-size: 20px; }
+  .coach-day { display: block; }
   .news-freestyle .news-photo img { object-position: 50% 45%; }
   .cut-button { position: relative; width: 100%; height: 56px; font-size: 17px; padding-inline: 18px; }
   .cut-button .arrow { width: 26px; height: 26px; }
