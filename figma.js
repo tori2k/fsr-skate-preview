@@ -112,7 +112,12 @@
     const next = mobileFraming[end < 0 ? mobileFraming.length - 1 : end];
     const prev = mobileFraming[end < 0 ? mobileFraming.length - 1 : Math.max(0, end - 1)];
     const amount = next[0] === prev[0] ? 0 : Math.min(1, (t - prev[0]) / (next[0] - prev[0]));
-    video.style.objectPosition = `${prev[1] + (next[1] - prev[1]) * amount}% center`;
+    const anchor = (prev[1] + (next[1] - prev[1]) * amount) / 100;
+    const visibleWidth = Math.min(1, video.clientWidth / video.clientHeight / ((video.videoWidth / video.videoHeight) || (16 / 9)));
+    // Anchors were reviewed in a 6:5 crop; keep their subject centers in a tall viewport.
+    const subjectX = .3375 + .325 * anchor;
+    const position = visibleWidth >= 1 ? .5 : Math.max(0, Math.min(1, (subjectX - visibleWidth / 2) / (1 - visibleWidth)));
+    video.style.objectPosition = `${position * 100}% center`;
   }
   function trackFrame() {
     frameRider();
@@ -237,6 +242,7 @@
     const stack = gsap.from(rows.slice(1), {
       y: (index) => -rows.slice(0, index + 1).reduce((height, row) => height + row.offsetHeight, 0),
       rotation: (index) => -(index + 1) * .75,
+      clipPath: 'inset(0 0 100% 0)',
       duration: 1, stagger: .08, ease: 'sine.inOut',
       scrollTrigger: {
         trigger: '.event-list', start: 'top 88%', end: 'top 8%',
