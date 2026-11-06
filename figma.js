@@ -239,7 +239,7 @@
       rotation: (index) => -(index + 1) * .75,
       duration: 1, stagger: .08, ease: 'sine.inOut',
       scrollTrigger: {
-        trigger: '.event-list', start: 'top 88%', end: 'top 8%',
+        trigger: '.event-list', start: 'top 120%', end: 'top 45%',
         scrub: .9, invalidateOnRefresh: true,
       },
     });

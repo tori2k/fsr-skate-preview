@@ -75,6 +75,7 @@
   .calendar { padding-top: 40px; padding-bottom: 72px; }
   .calendar-heading { display: flex; flex-direction: column; height: auto; margin-bottom: 26px; gap: 22px; }
   .calendar-more { position: relative; inset: auto; width: 190px; height: 48px; font-size: 16px; color: #080808; }
+  .event-list { border-radius: 0 0 12px 12px; }
   .event-row { grid-template-columns: minmax(0,1fr) 31%; column-gap: 16px; grid-template-rows: auto 1fr; height: auto; min-height: 210px; padding: 20px 0; }
   .event-date { grid-column: 1; grid-row: 1; border: 0; padding: 0; font-size: 20px; color: #ad3039; line-height: 1.3; letter-spacing: -.03em; }
   .event-row h3 { grid-column: 1; grid-row: 2; padding: 12px 0 0; font-size: clamp(20px, 5.7vw, 28px); line-height: 1.12; letter-spacing: -.03em; }
@@ -138,6 +139,7 @@
   .projects-grid { grid-template-columns: 1fr 1fr; }
   .calendar-heading { flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; }
   .calendar-more { flex: none; }
+  .event-list { border-radius: 0 0 12px 12px; }
   .event-row { grid-template-columns: 150px minmax(0,1fr) 170px; grid-template-rows: 1fr; gap: 24px; }
   .event-date { padding-top: 10px; }
   .event-row h3 { grid-column: 2; grid-row: 1; padding-top: 10px; font-size: 30px; }
