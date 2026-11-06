@@ -171,16 +171,37 @@
     // Rows unfold from beneath the first one, then settle into the Figma layout.
     // Native scrolling drives the stack; no pinning or added spacer height.
     const rows = [...document.querySelectorAll('.event-row')];
-    gsap.set(rows, { zIndex: (index) => rows.length - index });
+    gsap.set(rows, { zIndex: (index) => rows.length - index, clipPath: 'inset(0px)' });
+    // Clip each transparent sheet at the preceding sheet's tilted lower edge.
+    const maskRows = () => {
+      const sheets = rows.map((row) => {
+        const m = new DOMMatrix(getComputedStyle(row).transform);
+        const box = row.getBoundingClientRect();
+        const w = row.offsetWidth, h = row.offsetHeight;
+        return { m, w, h,
+          x: box.left - Math.min(0, m.a * w, m.c * h, m.a * w + m.c * h),
+          y: box.top - Math.min(0, m.b * w, m.d * h, m.b * w + m.d * h) };
+      });
+      rows.slice(1).forEach((row, index) => {
+        const prev = sheets[index], next = sheets[index + 1];
+        const slope = prev.m.b / prev.m.a;
+        const intercept = prev.y + prev.m.d * prev.h - slope * (prev.x + prev.m.c * prev.h);
+        const edge = (x) => Math.max(0, Math.min(next.h,
+          (slope * (next.x + next.m.a * x) + intercept - next.y - next.m.b * x) / (next.m.d - slope * next.m.c)));
+        row.style.clipPath = `polygon(0 ${edge(0)}px, 100% ${edge(next.w)}px, 100% 100%, 0 100%)`;
+      });
+    };
     const stack = gsap.from(rows.slice(1), {
       y: (index, row) => -(index + 1) * row.offsetHeight,
       rotation: (index) => -(index + 1) * 3,
+      onUpdate: maskRows,
       ease: 'power1.out',
       scrollTrigger: {
         trigger: '.event-list', start: 'top 80%', end: 'top 14%',
-        scrub: 0.65, invalidateOnRefresh: true,
+        scrub: 0.65, invalidateOnRefresh: true, onRefresh: maskRows,
       },
     });
+    maskRows();
     const showCalendar = () => { stack.scrollTrigger.disable(false); stack.progress(1); };
     rows.forEach((row) => row.addEventListener('focus', showCalendar));
     // Finite hover response preserves all crops and lets the lettering remain still.

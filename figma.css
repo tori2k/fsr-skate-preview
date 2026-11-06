@@ -39,3 +39,22 @@ body{overflow-x:clip}.footer{position:relative;margin-inline:calc(20 * var(--u))
 .mobile-break,.mobile-news-title{display:none}
 
 .footer-art{display:contents}
+
+/* Keep the desktop's opening and closing compositions inside short viewports. */
+@media (min-width: 1200px) {
+  .hero { height: min(calc(800 * var(--u)), 100svh); min-height: 420px; }
+  .hero h1 { top: auto; bottom: calc(110 * var(--u)); font-size: min(calc(128 * var(--u)), 17svh); }
+  .hero-intro { top: auto; bottom: calc(24 * var(--u)); }
+  .footer { --fy: min(calc(min(100vw, 1800px) / 1440), calc((100svh - 64px) / 784)); height: calc(784 * var(--fy)); }
+  .footer-shape { top: calc(32 * var(--fy)); height: calc(739 * var(--fy)); }
+  .footer-board-position { left: 48.3%; top: calc(-35 * var(--fy)); width: calc(344.261 * var(--fy)); height: calc(806 * var(--fy)); transform: translateX(-50%); }
+  .footer-brand { left: 50%; top: calc(185.15 * var(--fy)); width: calc(499.54 * var(--fy)); height: calc(172.97 * var(--fy)); gap: calc(42.27 * var(--fy)); transform: translateX(-50%); }
+  .footer-brand-symbol { width: calc(168.77 * var(--fy)); height: calc(172.97 * var(--fy)); }
+  .footer-brand-text { width: calc(288.14 * var(--fy)); height: calc(137.59 * var(--fy)); }
+  .footer-nav, .footer-contacts { top: calc(402 * var(--fy)); gap: calc(20 * var(--fy)); font-size: min(calc(24 * var(--u)), 3svh); }
+  .socials { margin-top: calc(10 * var(--fy)); font-size: min(calc(24 * var(--u)), 3svh); }
+  .partners { --u: var(--fy); top: calc(612 * var(--fy)); height: calc(120 * var(--fy)); }
+  .copyright, .privacy { top: calc(755 * var(--fy)); }
+  .copyright { top: calc(758 * var(--fy)); }
+  .event-row { background: transparent; }
+}
