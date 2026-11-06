@@ -85,13 +85,13 @@
   .event-vert img { object-position: 58% center; }
   .calendar::after { top: calc(100% - 180px); left: -60vw; width: 220vw; height: 760px; }
 
-  /* The illustration finishes at the page edge; the wrist continues beyond it. */
+  /* The extended forearm overlaps the sponsor belt and exits through the footer edge. */
   .footer { --footer-bottom: max(24px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; margin: 0 12px; height: auto; padding: 28px 20px var(--footer-bottom); background: var(--blue); border-radius: 22px 22px 0 0; color: var(--ink); overflow: hidden; }
   .footer-shape { display: none; }
-  .footer-art { display: block; position: relative; flex: none; order: 1; height: 520px; margin: 52px -20px 0; overflow: visible; clip-path: inset(-44px 0 0); isolation: isolate; }
-  .footer-board-position { top: -44px; left: 50%; margin: 0; transform: translateX(-50%); width: 256px; height: 600px; }
+  .footer-art { display: block; position: relative; flex: none; order: 1; height: 520px; margin: 52px -20px 0; overflow: visible; clip-path: none; isolation: isolate; z-index: 5; pointer-events: none; }
+  .footer-board-position { top: -44px; left: 50%; margin: 0; transform: translateX(-50%); width: 295px; height: auto; aspect-ratio: 833/1888; }
   .footer-board { object-fit: contain; transform-origin: 50% 100%; }
-  .footer-brand { top: 142px; left: 50%; width: min(300px, calc(100% - 24px)); height: auto; gap: 22px; transform: translateX(-50%); }
+  .footer-brand { pointer-events: auto; top: 142px; left: 50%; width: min(300px, calc(100% - 24px)); height: auto; gap: 22px; transform: translateX(-50%); }
   .footer-brand-symbol { width: 34%; height: auto; }
   .footer-brand-text { width: calc(66% - 22px); height: auto; }
   .footer-nav { position: relative; inset: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; width: auto; text-align: left; font-size: 18px; line-height: 1.2; }
