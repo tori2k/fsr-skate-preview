@@ -184,3 +184,11 @@
   .hero-intro-full { display: none; }
   .hero-intro-short { display: block; font-size: 10px; line-height: 1.4; }
 }
+
+@media (max-width: 699px) {
+  .calendar { display: flex; flex-direction: column; }
+  .calendar-heading { display: contents; }
+  .calendar-heading h2 { margin-bottom: 26px; }
+  .event-list { order: 1; }
+  .calendar-more { order: 2; align-self: flex-end; margin-top: 28px; }
+}
