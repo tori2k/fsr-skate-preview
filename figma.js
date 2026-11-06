@@ -98,6 +98,29 @@
 
   // Play the original Figma film once. Keep its final frame; no looping or pause UI.
   let heroVisible = true;
+  // Keep the opening tricks in view; later shots use a centered crop.
+  const mobileFraming = [
+    [0, 100], [.35, 100], [.65, 45], [1.05, 0], [1.7, 0],
+    [1.95, 50], [2.95, 50], [3.15, 20], [3.55, 100],
+    [4, 0], [4.55, 0], [5, 50], [30, 50],
+  ];
+  let framingFrame;
+  function frameRider() {
+    if (desktop.matches) { video.style.removeProperty('object-position'); return; }
+    const t = video.currentTime;
+    const end = mobileFraming.findIndex(([time]) => time > t);
+    const next = mobileFraming[end < 0 ? mobileFraming.length - 1 : end];
+    const prev = mobileFraming[end < 0 ? mobileFraming.length - 1 : Math.max(0, end - 1)];
+    const amount = next[0] === prev[0] ? 0 : Math.min(1, (t - prev[0]) / (next[0] - prev[0]));
+    video.style.objectPosition = `${prev[1] + (next[1] - prev[1]) * amount}% center`;
+  }
+  function trackFrame() {
+    frameRider();
+    if (!video.paused && !video.ended && video.requestVideoFrameCallback) framingFrame = video.requestVideoFrameCallback(trackFrame);
+  }
+  video.addEventListener('play', trackFrame);
+  video.addEventListener('pause', () => { if (framingFrame !== undefined) video.cancelVideoFrameCallback?.(framingFrame); });
+  video.addEventListener('timeupdate', frameRider);
   function syncVideo() {
     if (staticPreview || reduced.matches || navigator.connection?.saveData || document.hidden || !heroVisible) video.pause();
     else if (!video.ended) {
