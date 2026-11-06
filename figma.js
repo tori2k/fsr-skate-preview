@@ -177,26 +177,51 @@
   media.add('(max-width: 1199px) and (prefers-reduced-motion: no-preference)', () => {
     if (window.scrollY < 100) {
       gsap.from('.hero h1 span', {
-        y: 22, opacity: .4, duration: .95, stagger: .1, ease: 'expo.out',
-        clearProps: 'transform,opacity',
+        y: 32, clipPath: 'inset(0 0 100% 0)', duration: 1.1, stagger: .14, ease: 'power3.out',
+        clearProps: 'transform,clipPath',
       });
     }
-    const reveals = [];
-    document.querySelectorAll('.news-photo, .project-photo, .event-photo').forEach((photo) => {
-      const tween = gsap.from(photo.querySelector('.image-motion'), {
-        y: 14, scale: 1.04, duration: 1, ease: 'expo.out', clearProps: 'transform',
-        scrollTrigger: { trigger: photo, start: 'top 94%', once: true },
-      });
-      const link = photo.closest('a');
-      const onFocus = () => tween.progress(1);
+    // An editorial uncover happens inside the viewport, not before the reader arrives.
+    gsap.from('.mobile-news-title', {
+      clipPath: 'inset(0 0 85% 0)', y: 24, ease: 'none',
+      scrollTrigger: { trigger: '#news-title', start: 'top 90%', end: 'top 62%', scrub: .45 },
+    });
+    const focuses = [];
+    const finishOnFocus = (link, tween) => {
+      const onFocus = () => { tween.scrollTrigger.disable(false); tween.progress(1); };
       link.addEventListener('focus', onFocus);
-      reveals.push({ link, onFocus });
+      focuses.push({ link, onFocus });
+    };
+    const sports = gsap.from('.sport-link', {
+      x: 36, opacity: .5, stagger: .15, ease: 'power2.out',
+      scrollTrigger: { trigger: '.hero-sports', start: 'top 92%', end: 'top 48%', scrub: .5 },
+    });
+    document.querySelectorAll('.sport-link').forEach((link) => finishOnFocus(link, sports));
+    document.querySelectorAll('.news-photo, .project-photo').forEach((photo) => {
+      const tween = gsap.timeline({
+        scrollTrigger: { trigger: photo, start: 'top 88%', end: 'top 34%', scrub: .55 },
+      }).from(photo, {
+        clipPath: 'inset(0 0 28% 0 round 12px)', ease: 'none',
+      }, 0).from(photo.querySelector('.image-motion'), {
+        scale: 1.12, ease: 'none',
+      }, 0);
+      finishOnFocus(photo.closest('a'), tween);
+    });
+    document.querySelectorAll('.event-row').forEach((row) => {
+      const tween = gsap.timeline({
+        scrollTrigger: { trigger: row, start: 'top 87%', end: 'top 52%', scrub: .4 },
+      }).from(row.querySelector('.event-photo'), {
+        clipPath: 'inset(0 45% 0 0 round 10px)', ease: 'none',
+      }, 0).from(row.querySelector('.event-date'), {
+        x: 22, opacity: .45, ease: 'none',
+      }, 0);
+      finishOnFocus(row, tween);
     });
     gsap.from('.footer-board', {
-      y: 24, rotation: -4, ease: 'none',
-      scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'top 35%', scrub: .8 },
+      y: 60, rotation: -5, transformOrigin: '50% 100%', ease: 'none',
+      scrollTrigger: { trigger: '.footer-art', start: 'top 95%', end: 'bottom bottom', scrub: .7 },
     });
-    return () => reveals.forEach(({ link, onFocus }) => link.removeEventListener('focus', onFocus));
+    return () => focuses.forEach(({ link, onFocus }) => link.removeEventListener('focus', onFocus));
   });
   document.fonts.ready.then(() => ScrollTrigger.refresh());
 })();

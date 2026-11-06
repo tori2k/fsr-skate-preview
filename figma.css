@@ -37,3 +37,5 @@ body{overflow-x:clip}.footer{position:relative;margin-inline:calc(20 * var(--u))
 .motion-static .partner-belt{animation:none}
 
 .mobile-break,.mobile-news-title{display:none}
+
+.footer-art{display:contents}

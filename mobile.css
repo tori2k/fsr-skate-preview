@@ -20,18 +20,18 @@
   #mobile-menu a { display: flex; align-items: center; justify-content: space-between; min-height: 80px; padding: 16px 0; border-bottom: 1px solid rgba(36,32,33,.25); font: 800 clamp(28px, 8vw, 54px)/1.1 Inter, sans-serif; letter-spacing: -.04em; }
   #mobile-menu a::after { content: ''; width: 16px; height: 16px; border-top: 2px solid; border-right: 2px solid; transform: rotate(45deg); margin-right: 8px; }
 
-  /* Keep the film large; the useful content flows below instead of covering the rider. */
-  .hero { --film-height: clamp(480px, 74svh, 700px); display: grid; grid-template-rows: var(--film-height) auto auto; height: auto; min-height: 0; max-height: none; color: var(--ink); background: #fff; }
-  .hero-media { inset: 0 0 auto; height: var(--film-height); background: var(--ink); }
-  .hero-media video { object-position: 49% center; }
-  .hero-media::after { background: linear-gradient(180deg, rgba(0,0,0,.08) 30%, rgba(0,0,0,.64) 100%); }
-  .hero h1 { grid-row: 1; position: relative; align-self: end; left: auto; top: auto; bottom: auto; width: auto; padding: 0 var(--gutter) 28px; color: #fff; font-size: clamp(36px, 10.8vw, 80px); line-height: .98; letter-spacing: -.055em; }
+  /* Preserve the whole film frame; lettering gets its own editorial panel. */
+  .hero { display: grid; grid-template-rows: auto auto auto auto; padding-top: 60px; height: auto; min-height: 0; max-height: none; color: var(--ink); background: #fff; }
+  .hero-media { grid-row: 1; position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 720/406; background: var(--ink); }
+  .hero-media video { object-fit: contain; object-position: center; }
+  .hero-media::after { display: none; }
+  .hero h1 { grid-row: 2; position: relative; align-self: stretch; left: auto; top: auto; bottom: auto; width: auto; padding: 24px var(--gutter) 28px; color: #fff; background: var(--ink); font-size: clamp(36px, 10.8vw, 80px); line-height: .98; letter-spacing: -.055em; }
   .hero h1 span { overflow: visible; }
   .mobile-break { display: block; }
-  .hero-intro { grid-row: 2; position: relative; left: auto; top: auto; bottom: auto; width: auto; max-width: 720px; padding: 25px var(--gutter) 14px; font-size: 16px; line-height: 1.5; }
+  .hero-intro { grid-row: 3; position: relative; left: auto; top: auto; bottom: auto; width: auto; max-width: 720px; padding: 25px var(--gutter) 14px; font-size: 16px; line-height: 1.5; }
   .hero-intro a { color: #ad3039; min-height: 44px; gap: 10px; margin-top: 8px; }
   .hero-intro .arrow { width: 20px; height: 20px; }
-  .hero-sports { grid-row: 3; position: relative; top: auto; right: auto; width: auto; margin: 0 var(--gutter) 32px; gap: 8px; }
+  .hero-sports { grid-row: 4; position: relative; top: auto; right: auto; width: auto; margin: 0 var(--gutter) 32px; gap: 8px; }
   .sport-link { height: 64px; background: var(--ink); color: #fff; border-radius: 0 0 14px 0; }
   .sport-roller { background: var(--blue); color: var(--ink); }
   .sport-scooter { background: var(--wine); color: #080808; }
@@ -84,11 +84,12 @@
   .event-vert img { object-position: 58% center; }
   .calendar::after { top: calc(100% - 180px); left: -60vw; width: 220vw; height: 760px; }
 
-  /* The supplied board keeps its silhouette; links live below it, in normal flow. */
-  .footer { margin: 0 12px; height: auto; padding: 535px 20px max(24px, env(safe-area-inset-bottom)); background: var(--blue); border-radius: 22px 22px 0 0; color: var(--ink); overflow: visible; }
+  /* The illustration finishes at the page edge; the wrist continues beyond it. */
+  .footer { --footer-bottom: max(24px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; margin: 0 12px; height: auto; padding: 28px 20px var(--footer-bottom); background: var(--blue); border-radius: 22px 22px 0 0; color: var(--ink); overflow: hidden; }
   .footer-shape { display: none; }
-  .footer-board-position { top: -38px; left: 50%; margin: 0; transform: translateX(-50%); width: 235px; height: 550px; }
-  .footer-board { object-fit: contain; mask-image: linear-gradient(#000 0 97%, transparent 100%); }
+  .footer-art { display: block; position: relative; flex: none; order: 1; height: 520px; margin: 28px -20px calc(-1 * var(--footer-bottom)); overflow: hidden; isolation: isolate; }
+  .footer-board-position { top: 0; left: 50%; margin: 0; transform: translateX(-50%); width: 256px; height: 600px; }
+  .footer-board { object-fit: contain; transform-origin: 50% 100%; }
   .footer-brand { top: 142px; left: 50%; width: min(300px, calc(100% - 24px)); height: auto; gap: 22px; transform: translateX(-50%); }
   .footer-brand-symbol { width: 34%; height: auto; }
   .footer-brand-text { width: calc(66% - 22px); height: auto; }
@@ -116,8 +117,7 @@
 
 @media (min-width: 700px) and (max-width: 1199px) {
   :root { --gutter: 28px; }
-  .hero { --film-height: clamp(560px, 75svh, 800px); }
-  .hero h1 { font-size: clamp(68px, 8.6vw, 94px); max-width: 1000px; }
+  .hero h1 { font-size: clamp(68px, 8.6vw, 94px); max-width: none; }
   .mobile-break { display: none; }
   .hero-intro { padding-top: 30px; padding-bottom: 24px; }
   .hero-sports { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-bottom: 40px; }
@@ -141,7 +141,8 @@
   .event-date { padding-top: 10px; }
   .event-row h3 { grid-column: 2; grid-row: 1; padding-top: 10px; font-size: 30px; }
   .event-photo { grid-column: 3; grid-row: 1; }
-  .footer { margin: 36px 20px 0; padding: 535px 32px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .footer { --footer-bottom: 32px; margin: 36px 20px 0; padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .footer-art { grid-column: 1/-1; margin-inline: -32px; }
   .footer-nav { align-content: start; }
   .footer-contacts { margin-top: 0; }
   .partners { grid-column: 1/-1; margin-inline: -32px; }
@@ -156,6 +157,7 @@
   .sport-label { font-size: 16px; padding-inline: 12px; }
   .news-card:not(:first-child) h3 { font-size: 19px; }
   .footer { padding-inline: 16px; }
+  .footer-art { margin-inline: -16px; }
   .footer-nav { font-size: 16px; gap: 0 12px; }
   .footer-contacts { font-size: 21px; }
   .partners { margin-inline: -16px; }
