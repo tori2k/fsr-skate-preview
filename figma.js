@@ -238,17 +238,26 @@
       finishOnFocus(photo.closest('a'), tween);
     });
     const rows = [...document.querySelectorAll('.event-row')];
-    gsap.set(rows, { zIndex: (index) => rows.length - index });
+    gsap.set(rows, { zIndex: (index) => rows.length - index, clipPath: 'inset(0px 0px 0px)' });
+    // Transparent rows reveal only below the preceding row's visible bottom edge.
+    const maskRows = () => {
+      const bounds = rows.map((row) => row.getBoundingClientRect());
+      rows.slice(1).forEach((row, index) => {
+        const hidden = Math.min(bounds[index + 1].height,
+          Math.max(0, bounds[index].bottom - bounds[index + 1].top));
+        row.style.clipPath = `inset(${hidden}px 0px 0px)`;
+      });
+    };
     const stack = gsap.from(rows.slice(1), {
       y: (index) => -rows.slice(0, index + 1).reduce((height, row) => height + row.offsetHeight, 0),
-      rotation: (index) => -(index + 1) * .75,
-      clipPath: 'inset(0 0 100% 0)',
+      onUpdate: maskRows,
       duration: 1, stagger: .08, ease: 'sine.inOut',
       scrollTrigger: {
         trigger: '.event-list', start: 'top 88%', end: 'top 8%',
         scrub: .9, invalidateOnRefresh: true,
       },
     });
+    maskRows();
     rows.forEach((row) => finishOnFocus(row, stack));
     gsap.from('.footer-board', {
       y: 60, rotation: -5, transformOrigin: '50% 100%', ease: 'none',
