@@ -254,7 +254,7 @@
       duration: 1, stagger: .08, ease: 'sine.inOut',
       scrollTrigger: {
         trigger: '.event-list', start: 'top 88%', end: 'top 8%',
-        scrub: .9, invalidateOnRefresh: true,
+        scrub: .9, invalidateOnRefresh: true, onRefresh: maskRows,
       },
     });
     maskRows();
