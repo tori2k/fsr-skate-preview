@@ -110,10 +110,10 @@
   .partner-outline { border: 0; border-radius: 0; }
   .partner-outline img { display: block; }
   .partner-logo { opacity: .85; }
-  .copyright, .privacy { position: absolute; inset: auto; bottom: var(--footer-bottom); z-index: 6; width: calc(50% - 58px); margin: 0; padding: 0; background: none; color: var(--ink); font-size: 9px; line-height: 1.4; letter-spacing: 0; }
-  .copyright { left: var(--footer-inset); max-width: none; }
-  .privacy { right: var(--footer-inset); display: block; min-height: 0; }
-  .privacy .arrow { display: inline; width: 10px; height: 10px; margin-left: 3px; vertical-align: middle; }
+  .copyright, .privacy { position: absolute; inset: auto; bottom: var(--footer-bottom); z-index: 6; width: calc(50% - 58px); margin: 0; padding: 0; background: none; color: var(--ink); font-size: 7px; line-height: 1.35; letter-spacing: 0; }
+  .copyright { left: 0; max-width: none; text-align: left; }
+  .privacy { right: 0; display: block; min-height: 0; text-align: right; }
+  .privacy .arrow { display: inline; width: 8px; height: 8px; margin-left: 3px; vertical-align: middle; }
   #search-dialog { width: calc(100% - 24px); max-height: calc(100dvh - 100px); padding: 22px; border-radius: 0; }
   .search-heading { margin-bottom: 18px; }
   #search-input { font-size: 20px; }
@@ -159,7 +159,7 @@
   .hero h1 { font-size: 30px; }
   .footer-nav, .footer-contacts { font-size: 11px; }
   .socials { font-size: 9px; }
-  .copyright, .privacy { font-size: 8px; }
+  .copyright, .privacy { font-size: 6.5px; }
   .sport-photo { width: 72px; }
   .sport-label { font-size: 14px; padding-inline: 12px; }
   .news-card:not(:first-child) h3 { font-size: 19px; }
