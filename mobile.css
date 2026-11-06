@@ -102,6 +102,8 @@
   .socials { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; font-size: 16px; }
   .socials a { display: inline-flex; align-items: center; min-height: 44px; }
   .partners { --u: .65px; position: relative; order: 2; flex: none; z-index: 4; inset: auto; margin: 0 -20px calc(-1 * var(--footer-bottom)); padding-top: 12px; height: 104px; background: var(--blue); border-top: 1px solid rgba(255,255,255,.4); }
+  .partner-outline { border: 1px solid rgba(255,255,255,.4); border-radius: 12px; transform: none; }
+  .partner-outline img { display: none; }
   .partner-logo { opacity: .85; }
   .copyright, .privacy { position: relative; inset: auto; font-size: 11px; line-height: 1.45; letter-spacing: 0; }
   .copyright { max-width: 31em; margin-bottom: 12px; }
