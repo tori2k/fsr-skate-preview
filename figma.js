@@ -204,42 +204,46 @@
         clearProps: 'transform,clipPath',
       });
     }
-    // An editorial uncover happens inside the viewport, not before the reader arrives.
-    gsap.from('.mobile-news-title', {
-      clipPath: 'inset(0 0 85% 0)', y: 24, ease: 'none',
-      scrollTrigger: { trigger: '#news-title', start: 'top 90%', end: 'top 62%', scrub: .45 },
+    // Carry the desktop's mask reveals and unfolding calendar onto touch screens.
+    document.querySelectorAll('.mobile-news-title, .projects h2, .calendar h2').forEach((heading) => {
+      gsap.from(heading, {
+        clipPath: 'inset(0 0 90% 0)', y: 24, duration: .85, ease: 'expo.out',
+        clearProps: 'transform,clipPath',
+        scrollTrigger: { trigger: heading, start: 'top 90%', once: true },
+      });
     });
     const focuses = [];
     const finishOnFocus = (link, tween) => {
-      const onFocus = () => { tween.scrollTrigger.disable(false); tween.progress(1); };
+      const onFocus = () => { tween.scrollTrigger?.disable(false); tween.progress(1); };
       link.addEventListener('focus', onFocus);
       focuses.push({ link, onFocus });
     };
     const sports = gsap.from('.sport-link', {
-      x: 36, opacity: .5, stagger: .15, ease: 'power2.out',
-      scrollTrigger: { trigger: '.hero-sports', start: 'top 92%', end: 'top 48%', scrub: .5 },
+      x: 24, opacity: .4, duration: .85, stagger: .08, ease: 'expo.out',
+      clearProps: 'transform,opacity',
+      scrollTrigger: { trigger: '.hero-sports', start: 'top 92%', once: true },
     });
     document.querySelectorAll('.sport-link').forEach((link) => finishOnFocus(link, sports));
     document.querySelectorAll('.news-photo, .project-photo').forEach((photo) => {
-      const tween = gsap.timeline({
-        scrollTrigger: { trigger: photo, start: 'top 88%', end: 'top 34%', scrub: .55 },
-      }).from(photo, {
-        clipPath: 'inset(0 0 28% 0 round 12px)', ease: 'none',
-      }, 0).from(photo.querySelector('.image-motion'), {
-        scale: 1.12, ease: 'none',
-      }, 0);
+      const tween = gsap.from(photo.querySelector('.image-motion'), {
+        scale: 1.07, clipPath: 'inset(0 0 16% 0)', duration: 1.2, ease: 'expo.out',
+        clearProps: 'transform,clipPath',
+        scrollTrigger: { trigger: photo, start: 'top 90%', once: true },
+      });
       finishOnFocus(photo.closest('a'), tween);
     });
-    document.querySelectorAll('.event-row').forEach((row) => {
-      const tween = gsap.timeline({
-        scrollTrigger: { trigger: row, start: 'top 87%', end: 'top 52%', scrub: .4 },
-      }).from(row.querySelector('.event-photo'), {
-        clipPath: 'inset(0 45% 0 0 round 10px)', ease: 'none',
-      }, 0).from(row.querySelector('.event-date'), {
-        x: 22, opacity: .45, ease: 'none',
-      }, 0);
-      finishOnFocus(row, tween);
+    const rows = [...document.querySelectorAll('.event-row')];
+    gsap.set(rows, { zIndex: (index) => rows.length - index });
+    const stack = gsap.from(rows.slice(1), {
+      y: (index) => -rows.slice(0, index + 1).reduce((height, row) => height + row.offsetHeight, 0),
+      rotation: (index) => -(index + 1) * 1.5,
+      ease: 'power1.out',
+      scrollTrigger: {
+        trigger: '.event-list', start: 'top 80%', end: 'top 14%',
+        scrub: .65, invalidateOnRefresh: true,
+      },
     });
+    rows.forEach((row) => finishOnFocus(row, stack));
     gsap.from('.footer-board', {
       y: 60, rotation: -5, transformOrigin: '50% 100%', ease: 'none',
       scrollTrigger: { trigger: '.footer-art', start: 'top 95%', end: 'bottom bottom', scrub: .7 },
