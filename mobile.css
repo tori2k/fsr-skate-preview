@@ -1,3 +1,4 @@
+.hero-intro-short { display: none; }
 /* Phone and tablet compositions. Desktop remains the approved Figma artboard. */
 @media (max-width: 1199px) {
   :root { --u: 1px; --gutter: 20px; }
@@ -176,4 +177,9 @@
 }
 @media (max-width: 1199px) and (max-height: 500px) and (orientation: landscape) {
   .hero { height: auto; min-height: 540px; }
+}
+
+@media (max-width: 699px) {
+  .hero-intro-full { display: none; }
+  .hero-intro-short { display: block; font-size: 10px; line-height: 1.4; }
 }
