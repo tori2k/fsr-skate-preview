@@ -45,6 +45,8 @@
   }
   function closeMenu() {
     menu.hidden = true;
+    document.body.classList.remove('menu-open');
+    $('.page-shell').inert = false;
     menuButton.setAttribute('aria-expanded', 'false');
     menuButton.setAttribute('aria-label', 'Открыть меню');
   }
@@ -63,12 +65,31 @@
   input.addEventListener('input', search);
   menuButton.addEventListener('click', () => {
     const open = menu.hidden;
+    if (!open) { closeMenu(); return; }
     menu.hidden = !open;
+    document.body.classList.add('menu-open');
+    $('.page-shell').inert = true;
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+    if (!reduced.matches && !staticPreview) {
+      menu.animate([{ opacity: .6, transform: 'translateY(-12px)' }, { opacity: 1, transform: 'translateY(0)' }], {
+        duration: 300, easing: 'cubic-bezier(.16,1,.3,1)',
+      });
+    }
   });
   menu.addEventListener('click', (event) => { if (event.target.closest('a')) closeMenu(); });
-  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !menu.hidden) { closeMenu(); menuButton.focus(); } });
+  $('.brand').addEventListener('click', closeMenu);
+  document.addEventListener('keydown', (event) => {
+    if (menu.hidden) return;
+    if (event.key === 'Escape') { closeMenu(); menuButton.focus(); }
+    if (event.key === 'Tab') {
+      const controls = [...$('.site-header').querySelectorAll('a,button')].filter((node) => node.getClientRects().length);
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+  });
   desktop.addEventListener('change', () => {
     closeMenu();
     if (!desktop.matches && dialog.open) dialog.close();
@@ -78,10 +99,11 @@
   // Play the original Figma film once. Keep its final frame; no looping or pause UI.
   let heroVisible = true;
   function syncVideo() {
-    if (!desktop.matches || staticPreview || reduced.matches || document.hidden || !heroVisible) video.pause();
+    if (staticPreview || reduced.matches || navigator.connection?.saveData || document.hidden || !heroVisible) video.pause();
     else if (!video.ended) {
       const source = video.querySelector('source');
-      if (!source.hasAttribute('src')) { source.src = source.dataset.src; video.load(); }
+      const selected = desktop.matches ? source.dataset.src : source.dataset.mobileSrc;
+      if (source.getAttribute('src') !== selected) { source.src = selected; video.load(); }
       video.play().catch(() => {}); // Poster remains when autoplay is unavailable.
     }
   }
@@ -151,6 +173,30 @@
       reveals.forEach(({ link, onFocus }) => link.removeEventListener('focus', onFocus));
       hovers.forEach(({ card, enter, leave }) => { card.removeEventListener('mouseenter', enter); card.removeEventListener('mouseleave', leave); });
     };
+  });
+  media.add('(max-width: 1199px) and (prefers-reduced-motion: no-preference)', () => {
+    if (window.scrollY < 100) {
+      gsap.from('.hero h1 span', {
+        y: 22, opacity: .4, duration: .95, stagger: .1, ease: 'expo.out',
+        clearProps: 'transform,opacity',
+      });
+    }
+    const reveals = [];
+    document.querySelectorAll('.news-photo, .project-photo, .event-photo').forEach((photo) => {
+      const tween = gsap.from(photo.querySelector('.image-motion'), {
+        y: 14, scale: 1.04, duration: 1, ease: 'expo.out', clearProps: 'transform',
+        scrollTrigger: { trigger: photo, start: 'top 94%', once: true },
+      });
+      const link = photo.closest('a');
+      const onFocus = () => tween.progress(1);
+      link.addEventListener('focus', onFocus);
+      reveals.push({ link, onFocus });
+    });
+    gsap.from('.footer-board', {
+      y: 24, rotation: -4, ease: 'none',
+      scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'top 35%', scrub: .8 },
+    });
+    return () => reveals.forEach(({ link, onFocus }) => link.removeEventListener('focus', onFocus));
   });
   document.fonts.ready.then(() => ScrollTrigger.refresh());
 })();
