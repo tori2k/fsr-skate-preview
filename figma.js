@@ -236,11 +236,11 @@
     gsap.set(rows, { zIndex: (index) => rows.length - index });
     const stack = gsap.from(rows.slice(1), {
       y: (index) => -rows.slice(0, index + 1).reduce((height, row) => height + row.offsetHeight, 0),
-      rotation: (index) => -(index + 1) * 1.5,
-      ease: 'power1.out',
+      rotation: (index) => -(index + 1) * .75,
+      duration: 1, stagger: .08, ease: 'sine.inOut',
       scrollTrigger: {
-        trigger: '.event-list', start: 'top 80%', end: 'top 14%',
-        scrub: .65, invalidateOnRefresh: true,
+        trigger: '.event-list', start: 'top 88%', end: 'top 8%',
+        scrub: .9, invalidateOnRefresh: true,
       },
     });
     rows.forEach((row) => finishOnFocus(row, stack));

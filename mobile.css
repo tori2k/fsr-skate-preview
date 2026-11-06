@@ -32,7 +32,7 @@
   .hero-intro a { color: #ad3039; min-height: 44px; gap: 10px; margin-top: 8px; }
   .hero-intro .arrow { width: 20px; height: 20px; }
   .hero-sports { grid-row: 3; position: relative; top: auto; right: auto; width: auto; margin: 0 var(--gutter) 32px; gap: 8px; }
-  .sport-link { height: 64px; background: var(--ink); color: #fff; border-radius: 0 0 14px 0; }
+  .sport-link { height: 64px; background: #fff; color: var(--ink); border-radius: 0 0 14px 0; }
   .sport-roller { background: var(--blue); color: var(--ink); }
   .sport-scooter { background: var(--wine); color: #080808; }
   .sport-photo { width: 106px; }
