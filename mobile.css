@@ -46,16 +46,16 @@
   .news h2 { height: auto; margin-bottom: 28px; }
   .news h2 > img { display: none; }
   .mobile-news-title { display: block; font: 800 clamp(48px, 14vw, 82px)/.92 Inter, sans-serif; letter-spacing: -.055em; }
-  .news-grid { grid-template-columns: 1fr; gap: 25px; }
+  .news-grid { grid-template-columns: 1fr; gap: 22px; }
   .news-card { position: relative; }
   .news-photo { height: auto; aspect-ratio: 4/3; border-radius: 0; }
   .news-hockey .news-photo img { position: static; width: 100%; height: 100%; transform: none; object-fit: cover; }
   .news-copy { padding-top: 13px; }
   .news-date { color: #ffc4c7; font-size: 13px; font-weight: 500; margin-bottom: 7px; }
   .news-copy h3 { font-size: 23px; font-weight: 700; line-height: 1.15; letter-spacing: -.025em; }
-  .news-card:not(:first-child) { display: grid; grid-template-columns: 38% minmax(0,1fr); gap: 16px; padding-top: 24px; border-top: 0; }
+  .news-card:not(:first-child) { display: grid; grid-template-columns: 38% minmax(0,1fr); gap: 16px; padding-top: 12px; border-top: 0; }
   .news-card:not(:first-child) .news-photo { height: 170px; aspect-ratio: auto; }
-  .news-card:not(:first-child) .news-copy { align-self: center; padding-top: 0; }
+  .news-card:not(:first-child) .news-copy { align-self: end; padding-top: 0; }
   .news-card:not(:first-child) h3 { font-size: 20px; }
   .coach-day { display: block; }
   .news-freestyle .news-photo img { object-position: 50% 45%; }
